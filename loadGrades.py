@@ -9,6 +9,8 @@ import pandas as pd
 from userInput import *
 import os.path
 import numpy as np
+#Suppress pandas warnings from user
+pd.set_option('mode.chained_assignment', None)
 
 def loadGrades():
     while True:
@@ -92,20 +94,20 @@ def checkData(gradesData,studentNum,colNum):
         if (choice == 5):
             dataChecked = True
             everything = True
-            for i in range(len(Errors.iloc[0][1][0])):
+            for i in range(len(Errors.loc[0][1][0])):
                     #Inform user of which assignment for which student, has a wrong grade
                     #with index data from Errors dataframe
-                    print("The grade ({}) for student {} with ID {} of \"{}\" is not on the 7 step scale".format(gradesData.iloc[Errors.iloc[0][1][0][i],Errors.iloc[0][1][1][i]+2],gradesData.iloc[Errors.iloc[0][1][0][i],1],gradesData.iloc[Errors.iloc[0][1][0][i],0],gradesData.columns[Errors.iloc[0][1][1][i]+2]))
-            for i in range(len(Errors.iloc[1][1][0])):
+                    print("The grade ({}) for student {} with ID {} of \"{}\" is not on the 7 step scale".format(gradesData.iloc[Errors.loc[0][1][0][i],Errors.loc[0][1][1][i]+2],gradesData.iloc[Errors.loc[0][1][0][i],1],gradesData.iloc[Errors.loc[0][1][0][i],0],gradesData.columns[Errors.loc[0][1][1][i]+2]))
+            for i in range(len(Errors.loc[1][1][0])):
                 #Inform user of which assignment for which student, has a wrong grade
-                print("The student {} with ID {} did not receive a grade for \"{}\"".format(gradesData.iloc[Errors.iloc[1][1][0][i],1],gradesData.iloc[Errors.iloc[1][1][0][i],0],gradesData.columns[Errors.iloc[1][1][1][i]+2]))
+                print("The student {} with ID {} did not receive a grade for \"{}\"".format(gradesData.iloc[Errors.loc[1][1][0][i],1],gradesData.iloc[Errors.loc[1][1][0][i],0],gradesData.columns[Errors.loc[1][1][1][i]+2]))
             print("These missing grades will be ignored in calculations performed in the rest of the program")
-            for i in range(len(Errors.iloc[2][1][0])):
+            for i in range(len(Errors.loc[2][1][0])):
                 #Inform user of which students have the same student ID
-                print("The studentID for student \"{}\" is the same as for student \"{}\"".format(gradesData.iloc[Errors.iloc[2][1][0][i]-1,1],gradesData.iloc[Errors.iloc[2][1][0][i],1]))
-            for i in range(len(Errors.iloc[3][1][0])):
+                print("The studentID for student \"{}\" is the same as for student \"{}\"".format(gradesData.iloc[Errors.loc[2][1][0][i]-1,1],gradesData.iloc[Errors.loc[2][1][0][i],1]))
+            for i in range(len(Errors.loc[3][1][0])):
                 #Inform user of which students have the same name
-                print("The name for the student with studentID \"{}\" is the same as for the student with studentID \"{}\"".format(gradesData.iloc[Errors.iloc[3][1][0][i]-1,0],gradesData.iloc[Errors.iloc[3][1][0][i],0]))
+                print("The name for the student with studentID \"{}\" is the same as for the student with studentID \"{}\"".format(gradesData.iloc[Errors.loc[3][1][0][i]-1,0],gradesData.iloc[Errors.loc[3][1][0][i],0]))
                 checkDataOptions([0,2,3,4,5,],everything)
                 choice = inputChoiceNum("What errors would you like to correct (if any)? ", "Data Check")
                 if(choice == 1):
@@ -126,13 +128,13 @@ def checkData(gradesData,studentNum,colNum):
                 corWrongGrades(gradesData,Errors,everything)          
             elif(choice == 2):
                 dataChecked = True
-                for i in range(len(Errors.iloc[1][1][0])):
+                for i in range(len(Errors.loc[1][1][0])):
                     #Inform user of which assignment for which student, has a wrong grade
                     #Is not prompted for data removal as the data simply doesn't exist
-                    print("The student {} with ID {} did not receive a grade for \"{}\"".format(gradesData.iloc[Errors.iloc[1][1][0][i],1],gradesData.iloc[Errors.iloc[1][1][0][i],0],gradesData.columns[Errors.iloc[1][1][1][i]+2]))
+                    print("The student {} with ID {} did not receive a grade for \"{}\"".format(gradesData.iloc[Errors.loc[1][1][0][i],1],gradesData.iloc[Errors.loc[1][1][0][i],0],gradesData.columns[Errors.loc[1][1][1][i]+2]))
                 print("These missing grades will be ignored in calculations performed in the rest of the program")
             elif(choice == 3):
-                corWrongID(gradesData,Errors)
+                corWrongID(gradesData,Errors,everything)
             elif(choice == 4):
                 corWrongNames(gradesData, Errors, everything)
             
@@ -152,91 +154,99 @@ def corWrongGrades(gradesData,Errors,everything):
     dataChecked = True
     choice = 0
     print("\nIncorrect Grades: ")
-    for i in range(len(Errors.iloc[0][1][0])):
+    for i in range(len(Errors.loc[0][1][0])):
         #Inform user of which assignment for which student, has a wrong grade
         #with index data from Errors dataframe
         if not(everything):
-            print("\nThe grade ({}) for student {} with ID {} of \"{}\" is not on the 7 step scale".format(gradesData.iloc[Errors.iloc[0][1][0][i],Errors.iloc[0][1][1][i]+2],gradesData.iloc[Errors.iloc[0][1][0][i],1],gradesData.iloc[Errors.iloc[0][1][0][i],0],gradesData.columns[Errors.iloc[0][1][1][i]+2]))
+            print("\nThe grade ({}) for student {} with ID {} of \"{}\" is not on the 7 step scale".format(gradesData.iloc[Errors.loc[0][1][0][i],Errors.loc[0][1][1][i]+2],gradesData.iloc[Errors.loc[0][1][0][i],1],gradesData.iloc[Errors.loc[0][1][0][i],0],gradesData.columns[Errors.loc[0][1][1][i]+2]))
             choice = inputChoiceNum("Would you like to remove this data? (Y:1, N:0) ", "Y/N")
             if(choice == 1):
-                 gradesData.iat[Errors.iloc[0][1][0][i],Errors.iloc[0][1][1][i]+2] = None
+                 gradesData.iat[Errors.loc[0][1][0][i],Errors.loc[0][1][1][i]+2] = None
             else:
                 choice = inputChoiceNum("This will effect all other data analysis. Are you sure? (Yes:1, No Remove it:0) ", "Y/N")
                 if(choice ==1):
                     continue
                 else:
-                    gradesData.iat[Errors.iloc[0][1][0][i],Errors.iloc[0][1][1][i]+2] = None    
+                    gradesData.iat[Errors.loc[0][1][0][i],Errors.loc[0][1][1][i]+2] = None    
         else:
            
-            gradesData.iat[Errors.iloc[0][1][0][i],Errors.iloc[0][1][1][i]+2] = None
+            gradesData.iat[Errors.loc[0][1][0][i],Errors.loc[0][1][1][i]+2] = None
     print("\nRemoving incorrect grades...")
+    deleteError(Errors, "Grades")
     print("Successfully removed grades in data which are not part of the 7 step scale")
+    
     return
 
 def corWrongNames(gradesData,Errors,everything):
     dataChecked = True
     choice = 0
-    for i in range(len(Errors.iloc[3][1][0])):
+    for i in range(len(Errors.loc[3][1][0])):
         if not(everything):
             #Inform user of which students have the same name
-            print("The name for the student with studentID \"{}\" is the same as for the student with studentID \"{}\": ".format(gradesData.iloc[Errors.iloc[3][1][0][i]-1,0],gradesData.iloc[Errors.iloc[3][1][0][i],0]))
+            print("The name for the student with studentID \"{}\" is the same as for the student with studentID \"{}\": ".format(gradesData.iloc[Errors.loc[3][1][0][i]-1,0],gradesData.iloc[Errors.loc[3][1][0][i],0]))
         else:
             print("\nDuplicate Names")
         choice = inputChoiceNum("Would you like to correct the name? (Y:1, N:0) ", "Y/N")
                   
         if(choice == 1):
-            print("\n Rows of students with same name:\n",gradesData.loc[gradesData['Name'] == gradesData.iloc[Errors.iloc[3][1][0][i]-1,1]].to_string(index = False, na_rep = ''))
+            print("\n Rows of students with same name:\n",gradesData.loc[gradesData['Name'] == gradesData.iloc[Errors.loc[3][1][0][i]-1,1]].to_string(index = False, na_rep = ''))
             newName = inputChoiceStr("Please enter the name of the student: ", "Name")
             choice = inputChoiceNum("Do you want to change the name for the first or second occurence of the duplicated name? (First:0, Second: 1) ", "Y/N")
             if (choice == 1):
-               gradesData.iat[Errors.iloc[3][1][0][i],1] = newName
+               gradesData.iat[Errors.loc[3][1][0][i],1] = newName
             else:
-                gradesData.iat[Errors.iloc[3][1][0][i]-1,1] = newName
+                gradesData.iat[Errors.loc[3][1][0][i]-1,1] = newName
         else:
-            print("\n Rows of students with same name:\n",gradesData.loc[gradesData['Name'] == gradesData.iloc[Errors.iloc[3][1][0][i]-1,1]].to_string(index = False, na_rep = ''))
+            print("\n Rows of students with same name:\n",gradesData.loc[gradesData['Name'] == gradesData.iloc[Errors.loc[3][1][0][i]-1,1]].to_string(index = False, na_rep = ''))
             choice = inputChoiceNum("Would you like to remove the data for this student ID? (Y:1, N:0) ", "Y/N")
             if(choice == 1):
                 choice = inputChoiceNum("First or second occurence of the ID? (First:0, Second: 1) ", "Y/N")
                 if (choice == 1):
-                    dropID = Errors.iloc[3][1][0][i]
+                    dropID = Errors.loc[3][1][0][i]
                 else:
-                    dropID = Errors.iloc[3][1][0][i]-1
+                    dropID = Errors.loc[3][1][0][i]-1
                 #Remove row from data and reset index
                 gradesData.drop(dropID, inplace = True)
                 gradesData.reset_index(inplace = True)
+                print("\nRemoving data with duplicate Name...")
+                deleteError(Errors, "Name")
+                print("Successfully removed data for duplicate Name")
     return
 
 def corWrongID(gradesData,Errors,everything):
     dataChecked = True
     choice = 0
-    for i in range(len(Errors.iloc[2][1][0])):
+    for i in range(len(Errors.loc[2][1][0])):
         if not(everything):
             #Inform user of which students have the same student ID
-            print("The studentID for student \"{}\" is the same as for student \"{}\"".format(gradesData.iloc[Errors.iloc[2][1][0][i]-1,1],gradesData.iloc[Errors.iloc[2][1][0][i],1]))
+            print("The studentID for student \"{}\" is the same as for student \"{}\"".format(gradesData.iloc[Errors.loc[2][1][0][i]-1,1],gradesData.iloc[Errors.loc[2][1][0][i],1]))
             #Prompt user for action to be taken for this data
         else:
             print("\nDuplicate ID's: ")
         choice = inputChoiceNum("Would you like to correct the students ID? (Y:1, N:0) ", "Y/N")
         if(choice == 1):
-            print("\nRows of students wih same studentID\n",gradesData.loc[gradesData['StudentID'] == gradesData.iloc[Errors.iloc[2][1][0][i]-1,0]].to_string(index = False, na_rep = ''))
+            print("\nRows of students wih same studentID\n",gradesData.loc[gradesData['StudentID'] == gradesData.iloc[Errors.loc[2][1][0][i]-1,0]].to_string(index = False, na_rep = ''))
             newID = inputChoiceStr("Please enter the students ID: ", "StudentID")
             choice = inputChoiceNum("Which ID should be replaced? First or second occurence of the ID? (First:0, Second: 1) ", "Y/N")
             if (choice == 1):
-                gradesData.iat[Errors.iloc[2][1][0][i],0] = newID
+                gradesData.iat[Errors.loc[2][1][0][i],0] = newID
             else:
-                gradesData.iat[Errors.iloc[2][1][0][i]-1,0] = newID
+                gradesData.iat[Errors.loc[2][1][0][i]-1,0] = newID
         else:
-            print("\nRows of students wih same studentID\n",gradesData.loc[gradesData['StudentID'] == gradesData.iloc[Errors.iloc[2][1][0][i]-1,0]].to_string(index = False, na_rep = ''))
+            print("\nRows of students wih same studentID\n",gradesData.loc[gradesData['StudentID'] == gradesData.iloc[Errors.loc[2][1][0][i]-1,0]].to_string(index = False, na_rep = ''))
             choice = inputChoiceNum("Would you like to remove the data for this student ID? (Y:1, N:0) ", "Y/N")
             if(choice == 1):
                 choice = inputChoiceNum("First or second occurence of the ID? (First:0, Second: 1) ", "Y/N")
                 if (choice == 1):
-                    dropID = Errors.iloc[2][1][0][i]
+                    dropID = Errors.loc[2][1][0][i]
                 else:
-                    dropID = Errors.iloc[2][1][0][i]-1
+                    dropID = Errors.loc[2][1][0][i]-1
                 #Remove row from data and reset index
                 gradesData.drop(dropID, inplace = True)
                 gradesData.reset_index(inplace = True)
+                print("\nRemoving data with duplicate ID...")
+                deleteError(Errors, "ID")
+                print("Successfully removed data for duplicate ID")
             else:
                 continue
     return
@@ -246,3 +256,14 @@ def corEverything(gradesData,Errors,everything):
         corWrongID(gradesData, Errors, everything)
         corWrongNames(gradesData, Errors, everything)
         return
+    
+def deleteError(Errors,dropType):
+    if (dropType=="Grades"):
+        Errors.drop(0,inplace=True)
+    elif(dropType=="noAssign"):
+        Errors.drop(1,inplace=True)
+    elif(dropType=="ID"):
+        Errors.drop(2,inplace=True)
+    elif(dropType=="Name"):
+        Errors.drop(3,inplace=True)
+    return Errors
