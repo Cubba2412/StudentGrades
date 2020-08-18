@@ -5,7 +5,7 @@ Created on Mon Aug 17 09:51:10 2020
 @author: ThomasBirk
 """
 
-def inputChoiceStr(prompt):
+def inputChoiceStr(prompt, inputType):
     # Continously prompt the user for a string input 
     while True:
         try:
@@ -13,6 +13,12 @@ def inputChoiceStr(prompt):
             if string.isdigit():
                 pass
                 print("Please enter a valid string")
+            elif((len(string) < 7) or (string[0] != 's')) and (inputType == "StudentID"):
+                pass
+                print("Please enter a valid 6 digit student number with the prefix 's' (example s123456)")
+            elif not(' ' in string) and (inputType == "Name"):
+               pass
+               print("Please enter a first and last name of the student, seperated by a space")
             else:
                 break
         except ValueError:

@@ -47,7 +47,7 @@ while True:
             else:
                 while True:
                    try:
-                       checkData(gradesData,studentNum,colNum)
+                       Errors = checkData(gradesData,studentNum,colNum)
                        break
                    except ValueError:
                        print("Error when checking data")

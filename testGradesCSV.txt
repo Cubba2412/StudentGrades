@@ -1,5 +1,5 @@
 StudentID,Name,Assignment1,Assignment2,Assignment3,Assignment4
-s123456,Michael Andersen,7,,4,10
-s123456,Bettina Petersen,12,7,6,7
-s123468,Bettina Petersen,-3,4,12,10
-s123579,Marie Hansen,10,7,12,0
+s123456,Michael Andersen,7,4,4,
+s123456,Bettina Petersen,12,7,6,
+s123468,Bettina Petersen,46,4,12,34
+s123579,Marie Hansen,10,,12,2
