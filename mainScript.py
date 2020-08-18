@@ -95,6 +95,7 @@ while True:
 # =============================================================================
             else:
                 print("\nGenerating list of grades...\n")
+                print(gradesData.to_string(index = False, na_rep = ''))
         #Exit the program, by breaking the loop
         elif(choice == 5):
             print("Goodbye")
