@@ -1,12 +1,8 @@
 
 from roundGrade import *
-import os
-os.getcwd()
 import numpy as np
 import pandas as pd
 
-path = os.getcwd()
-os.chdir(path)
 
 def computeFinalGrades(grades):
     # COMPUTEFINALGRADES Recives a serie of grades (as rows in a matrix) for each student 
@@ -62,20 +58,6 @@ def computeFinalGrades(grades):
     gradesFinal = gradesFinal + rGrades
     
     return gradesFinal
-
-
-
-
-#ALT HERUNDER ER BARE TEST OG SKAL FJERNES
-#grades = np.array([[12, 10, 7], [7, np.nan, np.nan], [4, 2, np.nan], [4, 0, 0], [7, 4, 2], [12, 7, 0], [10, 2, -3], [10, 10, 4]])
-#grades = np.array([[12, 10, 7], [7, None, None], [4, 2, None], [4, 0, 0], [7, 4, 2], [12, 7, 0], [10, 2, -3], [10, 10, 4]])
-
-#data = np.array([["s1", "a", 12, 10, 7], ["s2", "b", 7, np.nan, np.nan], ["s3", "c", 4, 2, np.nan], ["s4", "d", 4, 0, 0], ["s5", "e", 7, 4, 2], ["s6", "f", 12, 7, 0], ["s7", "g", 10, 2, -3], ["s8", "h", 10, 10, 4]])
-
-#a = np.array([[ 7.,  4.,  4., nan], [12.,  7.,  2., nan], [10.,  4., 12., 7.], [10., nan, 12.,  2.]])
-a = np.array([[ 7.,  4.,  -3.], [12.,  np.nan,  np.nan], [10.,  4., np.nan], [10., 12.,  2.]])
-
-print(computeFinalGrades(a))
 
 
 

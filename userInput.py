@@ -6,6 +6,14 @@ Created on Mon Aug 17 09:51:10 2020
 """
 
 def inputChoiceStr(prompt, inputType):
+    # inputChoiceStr prompts the user for string input
+    # Usage: choice = inputChoiceStr(prompt,inputType)
+    ##
+    # Input: prompt: what question is presented to user
+    #        inputType: used for validation criteria for specific question
+    # Output: The user inputted string 
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     # Continously prompt the user for a string input 
     while True:
         try:
@@ -26,29 +34,28 @@ def inputChoiceStr(prompt, inputType):
     return string
 
 def inputChoiceNum(prompt, inputType):
-    # Continously prompt the user for a number untill a valid option has been given
+    # inputChoiceNum prompts the user for integer input
+    # Usage: choice = inputChoicenum(prompt,inputType)
+    ##
+    # Input: prompt: what question is presented to user
+    #        inputType: used for validation criteria for specific question
+    # Output: The user inputted integer 
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     
+    # Continously prompt the user for a number untill a valid option has been given
     while True:
         try:
             num = int(input(prompt))
+            #Only allow user to choose a valid option
             if not(0 < num < 7) and (inputType == "Data Check"):
                 pass
                 print("Please enter a number between 1 and 6")
-# =============================================================================
-#             elif not(0 < num < 5) and (inputType == "Bacteria"):
-#                 pass
-#                 print("Please enter a number between 1 and 4")
+            #Only allow a yes or no
             elif not(0 <= num <= 1) and (inputType == "Y/N"):
                  pass
                  print("Please enter a valid option (No: 0, Yes: 1) ")
-#             elif not(0<= num <=1) and (inputType == "Limit"):
-#                 pass
-#                 print("Please enter a valid growth rate limit (between 0 and 1)")
-#             elif not(1<= num <=2) and (inputType == "Filtered data"):
-#                 pass
-#                 print("Please enter a valid plot option: \n1: Plot original data \n2: Plot Filtered data")
             else:
-# =============================================================================
                 break
         except ValueError:
             pass
@@ -57,6 +64,11 @@ def inputChoiceNum(prompt, inputType):
 
 
 def printMenu():
+    # printMenu() prints the main menu options to the user
+    # Usage: printMenu()
+    ##
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     print("1. Load new data.")
     print("2. Check for data errors.")
     print("3. Generate plots.")

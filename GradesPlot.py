@@ -25,13 +25,13 @@ def gradesPlot(grades):
     grades[grades == np.nan]=42                                                 #Replace all None-values with an unused value
      
     
-    hist = np.array([np.count_nonzero(grades[:,0: len(grades[0])-1] == example[0]),    #Looks through the data except for the 
-                     np.count_nonzero(grades[:,0: len(grades[0])-1] == example[1]),    #last coloumn where the amount of finished
-                     np.count_nonzero(grades[:,0: len(grades[0])-1] == example[2]),    #assignments are stored.
-                     np.count_nonzero(grades[:,0: len(grades[0])-1] == example[3]),
-                     np.count_nonzero(grades[:,0: len(grades[0])-1] == example[4]),
-                     np.count_nonzero(grades[:,0: len(grades[0])-1] == example[5]),
-                     np.count_nonzero(grades[:,0: len(grades[0])-1] == example[6])])
+    hist = np.array([np.count_nonzero(grades[:,0: len(grades[0])] == example[0]),    #Looks through the data 
+                     np.count_nonzero(grades[:,0: len(grades[0])] == example[1]),    
+                     np.count_nonzero(grades[:,0: len(grades[0])] == example[2]),    
+                     np.count_nonzero(grades[:,0: len(grades[0])] == example[3]),
+                     np.count_nonzero(grades[:,0: len(grades[0])] == example[4]),
+                     np.count_nonzero(grades[:,0: len(grades[0])] == example[5]),
+                     np.count_nonzero(grades[:,0: len(grades[0])] == example[6])])
     #######################################################################################
 
 
@@ -55,7 +55,8 @@ def gradesPlot(grades):
     
     #########################################################################################
     #This part of the function creates the pointplot with markers for the average for each assignment
-    assignments=max(grades[:,len(grades[0])-1])
+    assignments=len(grades[0])
+    print(assignments)
     x = np.arange(0,assignments)
     
     fig, pp=plt.subplots()                                      #Starts a new figure.
@@ -92,35 +93,6 @@ def gradesPlot(grades):
 
 
     return
-
-
-
-
-
-
-
-gradesPlot(np.array([[12,  4,  7, 12,  2,  7, 10,  1],
-                     [10,  4,  2,  4,  4,  4,  7,  2],
-                     [ 7,  2,  4,  2, 11, 10,  4,  3],
-                     [ 4,  4,  2, 12,  np.nan,  7,  7,  4],
-                     [ 2,  4,  0,  2,  4, -3,  7,  5],
-                     [ 7,  0,  0,  4,  4,  7,  7,  6],
-                     [ 7,  4, 10, 10,  7,  7, 10,  7]]))
-
-"""
-a = np.array([[ 7.,  4.,  -3., 3], [12.,  np.nan,  np.nan, 1], [10.,  4., np.nan, 2], [10., 12.,  2., 3]])
-gradesPlot(a)
-"""
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Aug 17 09:48:19 2020
-
-@author: ThomasBirk
-"""
-
 import pandas as pd
 from userInput import *
 import os.path
@@ -13,6 +6,15 @@ import numpy as np
 pd.set_option('mode.chained_assignment', None)
 
 def loadGrades():
+    # loadGrades Loads in a CSV file containing N x M data values and
+    # returns it as pandas dataframe
+    ##
+    # Usage: gradesData, dataLoaded, colNum, studentNum = loadGrades()
+    ##
+    # Output data: N x M pandas dataframe with student data and grades in the  
+    # CSV file given
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     while True:
             try:
                 #Load datafile if it is a valid filename, otherwise
@@ -28,39 +30,29 @@ def loadGrades():
                 print("\nError while loading datafile")
    
     
-    #Create column dataframe to add to the main data, indicating number of 
-    #of assignments per student for each student
+    #Get number of columns and students to return to main script
     colNum = len(gradesData.columns)
     studentNum = gradesData.shape[0]
-# =============================================================================
-#     studentAssign = pd.DataFrame(np.arange(studentNum).reshape(-1,1), columns=['Number of Assignments'])
-#     assignNum = 0
-#     
-#     
-#     for i in range(0,studentNum):
-#        for j in range(0,colNum-2):
-#            #If the student completed the assignment, (value is not null (nan))
-#            #increment assignment count
-#            if not(gradesData.isnull().iloc[i:i+1,2:colNum].values[0,j]):
-#                assignNum += 1
-#        #Acess first column at row index i and set value to number of assignments for the student
-#        studentAssign.iloc[:,0].iloc[i] = assignNum
-#        assignNum = 0
-#            
-#     #Join the number of assignments column with original data.
-#     gradesData = gradesData.join(studentAssign)
-# =============================================================================
-    
-    
+
     return gradesData, dataLoaded, colNum, studentNum
 
 
-def checkData(gradesData,studentNum,colNum):
+def checkData(gradesData):
+    # checkData allows the user to check for various error in the loaded CSV file
+    ##
+    # Usage: Errors = checkData(gradesData)
+    ##
+    # Input: gradesData: N x M pandas dataframe with student data and grades
+    # Output data: An updated N x 2 pandas dataframe with Error types as well as   
+    # the indexes in the given "gradesData" where they are located
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     dataChecked = False
     everything = False
     while True:
         Errors = loadErrors(gradesData)
         #Prompt user for what errors they wish to see.
+        #Varies depending on previous choices and errors present in data
         if not(Errors.empty):
             if(dataChecked & everything):
                  choice = inputChoiceNum("Data checked for all Errors. Would you like to exit to the main menu? (Y:1,N:0) ", "Y/N")
@@ -83,25 +75,16 @@ def checkData(gradesData,studentNum,colNum):
                 everything = True
                 if(errorExists(Errors,'WG')):
                     for i in range(len(getNumErrors(Errors, 'WG',False))):
-                        #Inform user of which assignment for which student, has a wrong grade
-                        #with index data from Errors dataframe
+                        #Inform user of which assignment for which student, 
+                        #has a wrong grade with index data from Errors dataframe
                         print("The grade ({}) for student {} with ID {} of \"{}\" is not on the 7 step scale".format(*getPrintData(gradesData, Errors, 'WG', i)))
-# =============================================================================
-#                 if(errorExists(Errors,'No Assignment')):
-#                     for i in range(len(Errors.loc[Errors['ErrorType'] == 'No Assignment'].iloc[0][1][0])):
-#                         #Inform user of which assignment for which student, has a wrong grade
-#                         print("The student {} with ID {} did not receive a grade for \"{}\"".format(gradesData.iloc[Errors.loc[1][1][0][i],1],gradesData.iloc[Errors.loc[1][1][0][i],0],gradesData.columns[Errors.loc[1][1][1][i]+2]))
-#                     print("These missing grades will be ignored in calculations performed in the rest of the program")
-#                     deleteError(Errors,"noAssign")
                 if(errorExists(Errors,'ID')):
                     for i in range(len(getNumErrors(Errors, 'ID',False))):
                         #Inform user of which students have the same student ID
-                      #  print("The studentID for student \"{}\" is the same as for student \"{}\"".format(gradesData.iloc[Errors.loc[2][1][0][i]-1,1],gradesData.iloc[Errors.loc[2][1][0][i],1]))
                         print("The studentID for student \"{}\" is the same as for student \"{}\"".format(*getPrintData(gradesData,Errors,'ID',i)))
                 if(errorExists(Errors,'Name')):
                     for i in range(len(getNumErrors(Errors, 'Name',False))):
                         #Inform user of which students have the same name
-                        #print("The name for the student with studentID \"{}\" is the same as for the student with studentID \"{}\"".format(gradesData.iloc[Errors.loc[3][1][0][i]-1,0],gradesData.iloc[Errors.loc[3][1][0][i],0]))
                         print("The name for the student with studentID \"{}\" is the same as for the student with studentID \"{}\"".format(*getPrintData(gradesData,Errors,'Name',i)))
                 if not(Errors.empty):
                     options = determineOptions(Errors,everything)
@@ -123,23 +106,13 @@ def checkData(gradesData,studentNum,colNum):
                     elif(choice == 'Go Back\n'):
                         everything = False
                         continue
-                       
+            
             elif(choice == 'Exit to main menu\n'):
                 print("Reverting back to main menu\n")
                 break
             elif(choice == 'Wrong Grade'):
                     dataChecked = True
                     corWrongGrades(gradesData,Errors,everything)     
-# =============================================================================
-#             elif(choice == 'No Assignment'):
-#                     dataChecked = True
-#                     for i in range(len(Errors.loc[Errors['ErrorType'] == 'No Assignment'].iloc[0][1][0])):
-#                         #Inform user of which assignment for which student, has a wrong grade
-#                         #Is not prompted for data removal as the data simply doesn't exist
-#                         print("The student {} with ID {} did not receive a grade for \"{}\"".format(gradesData.iloc[Errors.loc[1][1][0][i],1],gradesData.iloc[Errors.loc[1][1][0][i],0],gradesData.columns[Errors.loc[1][1][1][i]+2]))
-#                     print("These missing grades will be ignored in calculations performed in the rest of the program")
-#                     deleteError(Errors,"noAssign")
-# =============================================================================
             elif(choice == 'Duplicate Student ID\'s'):
                     dataChecked = True
                     corWrongID(gradesData,Errors,everything)
@@ -155,18 +128,41 @@ def checkData(gradesData,studentNum,colNum):
     return Errors
 
 def getErrIdxList(ErrorType):
+    # getErrIdxList creates a list of the Error types to get print data for
+    ##
+    # Usage: ErrIdxList = getErrIdxList(ErrorType)
+    ##
+    # Input: type of Error in question
+    # Output data: list of strings / chars used for which Errortype to locate
+    # in the Errors dataframe
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
+    
     #Wrong Grades
     if(ErrorType == 'WG'):
         ErrIdxList = ['G','N','ID','A']
-        
+    #Duplicate ID    
     elif(ErrorType == 'ID'):
         ErrIdxList = ['N','N']
+    #Duplicate Name
     elif(ErrorType == 'Name'):
         ErrIdxList = ['ID','ID']
     return ErrIdxList
     
 
 def getPrintData(gradesData,Errors,ErrorType,i):
+    # getPrintData creates a list of the Error types to get print data for
+    ##
+    # Usage: stringValues = getErrIdxList(ErrorType)
+    ##
+    # Input: gradesData: N x M pandas dataframe with student data and grades
+    #        Errors:N x 2 pandas dataframe with Error types as well as   
+    #        the indexes in the given "gradesData" where they are located 
+    #        ErrorType: Type of Error in question
+    #        i = iterator of for loop
+    # Output data: list of strings to print with str.format
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     First = True
     stringValues = []
     ErrIdxList = getErrIdxList(ErrorType)
@@ -208,12 +204,31 @@ def getPrintData(gradesData,Errors,ErrorType,i):
     return stringValues
 
 def printOptions(options):
+    # printOptions prints the users options
+    ##
+    # Usage: printOptions(options)
+    ##
+    # Input: options = list of string options to print
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     print("\nOptions: ")
     for i in options:
         print(i)
     return
 
 def getNumErrors(Errors,ErrorType,change):
+    # getNumErrors finds the index in gradesData of the given error
+    ##
+    # Usage: num = getNumErrors(Errors,ErrorType,change)
+    ##
+    # Input: Errors:N x 2 pandas dataframe with Error types as well as   
+    #        the indexes in the given "gradesData" where they are located 
+    #        ErrorType: Type of Error in question
+    #        change: is the index used for changing a value or simply accessing
+    #        an index
+    # Output data: index or list of indexes (depending on the bool change)
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     if not(change):
         num = Errors.loc[Errors['ErrorType'] == ErrorType].iloc[0][1][0]
     else:
@@ -221,6 +236,19 @@ def getNumErrors(Errors,ErrorType,change):
     return num
     
 def corWrongGrades(gradesData,Errors,everything):
+    # corWrongGrades corrects the wrong grades found in the gradesData given
+    ##
+    # Usage: corWrongGrades(gradesData,Errors,everything)
+    ##
+    # Input: gradesData:  N x M pandas dataframe with student data and grades
+    #        Errors:N x 2 pandas dataframe with Error types as well as   
+    #        the indexes in the given "gradesData" where they are located 
+    #        everything: bool value indicating if the option "check everything"
+    #        was chosen. Terminal output varies depending on this
+    #        The user is prompted throughout the function about how they want 
+    #        the data corrected
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     dataChecked = True
     choice = 0
     removed = False
@@ -232,6 +260,7 @@ def corWrongGrades(gradesData,Errors,everything):
             print("The grade ({}) for student {} with ID {} of \"{}\" is not on the 7 step scale".format(*getPrintData(gradesData, Errors, 'WG', i)))
             choice = inputChoiceNum("Would you like to remove this data? (Y:1, N:0) ", "Y/N")
             if(choice == 1):
+                #Remove grade by setting to nan
                  gradesData.iat[getNumErrors(Errors,'WG',True)[0][i],getNumErrors(Errors,'WG',True)[1][i]+2] = None
                  removed = True
             else:
@@ -253,6 +282,19 @@ def corWrongGrades(gradesData,Errors,everything):
     return
 
 def corWrongNames(gradesData,Errors,everything):
+    # corWrongNames corrects the duplicate names found in the gradesData given
+    ##
+    # Usage: corWrongNames(gradesData,Errors,everything)
+    ##
+    # Input: gradesData:  N x M pandas dataframe with student data and grades
+    #        Errors:N x 2 pandas dataframe with Error types as well as   
+    #        the indexes in the given "gradesData" where they are located 
+    #        everything: bool value indicating if the option "check everything"
+    #        was chosen. Terminal output varies depending on this
+    #        The user is prompted throughout the function about how they want 
+    #        the data corrected
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     dataChecked = True
     choice = 0
     for i in range(len(getNumErrors(Errors, 'Name',False))):
@@ -268,6 +310,7 @@ def corWrongNames(gradesData,Errors,everything):
             newName = inputChoiceStr("Please enter the name of the student: ", "Name")
             choice = inputChoiceNum("Do you want to change the name for the first or second occurence of the duplicated name? (First:0, Second: 1) ", "Y/N")
             if (choice == 1):
+                #Change name to users input
                gradesData.iat[getNumErrors(Errors, 'Name',False)[0],1] = newName
             else:
                 gradesData.iat[getNumErrors(Errors, 'Name',False)[0]-1,1] = newName
@@ -280,6 +323,7 @@ def corWrongNames(gradesData,Errors,everything):
             if(choice == 1):
                 choice = inputChoiceNum("First or second occurence of the Name? (First:0, Second: 1) ", "Y/N")
                 if (choice == 1):
+                    #Find row to remove
                     dropID = getNumErrors(Errors, 'Name',False)[0]
                 else:
                     dropID = getNumErrors(Errors, 'Name',False)[0]-1
@@ -297,6 +341,19 @@ def corWrongNames(gradesData,Errors,everything):
     return
 
 def corWrongID(gradesData,Errors,everything):
+    # corWrongID corrects the duplicate student ID'sfound in the gradesData given
+    ##
+    # Usage: corWrongID(gradesData,Errors,everything)
+    ##
+    # Input: gradesData:  N x M pandas dataframe with student data and grades
+    #        Errors:N x 2 pandas dataframe with Error types as well as   
+    #        the indexes in the given "gradesData" where they are located 
+    #        everything: bool value indicating if the option "check everything"
+    #        was chosen. Terminal output varies depending on this
+    #        The user is prompted throughout the function about how they want 
+    #        the data corrected
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     dataChecked = True
     choice = 0
     for i in range(len(getNumErrors(Errors, 'ID',False))):
@@ -312,6 +369,7 @@ def corWrongID(gradesData,Errors,everything):
             newID = inputChoiceStr("Please enter the students ID: ", "StudentID")
             choice = inputChoiceNum("Which ID should be replaced? First or second occurence of the ID? (First:0, Second: 1) ", "Y/N")
             if (choice == 1):
+                #Change ID to what was given by the user
                 gradesData.iat[getNumErrors(Errors, 'ID',False)[0],0] = newID
             else:
                 gradesData.iat[getNumErrors(Errors, 'ID',False)[0]-1,0] = newID
@@ -324,6 +382,7 @@ def corWrongID(gradesData,Errors,everything):
             if(choice == 1):
                 choice = inputChoiceNum("First or second occurence of the ID? (First:0, Second: 1) ", "Y/N")
                 if (choice == 1):
+                    #Get row to remove
                     dropID = getNumErrors(Errors, 'ID',False)[0]
                 else:
                     dropID = getNumErrors(Errors, 'ID',False)[0]-1
@@ -338,6 +397,19 @@ def corWrongID(gradesData,Errors,everything):
     return
 
 def corEverything(gradesData,Errors,everything):
+    # corEverything corrects all errors found in the gradesData given.
+    ##
+    # Usage: corWrongGrades(gradesData,Errors,everything)
+    ##
+    # Input: gradesData:  N x M pandas dataframe with student data and grades
+    #        Errors:N x 2 pandas dataframe with Error types as well as   
+    #        the indexes in the given "gradesData" where they are located 
+    #        everything: bool value indicating if the option "check everything"
+    #        was chosen. Terminal output varies depending on this
+    #        The user is prompted throughout the function about how they want 
+    #        the data corrected
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
         if(errorExists(Errors,'WG')):
             corWrongGrades(gradesData, Errors, everything)
         if(errorExists(Errors,'ID')):   
@@ -353,22 +425,45 @@ def corEverything(gradesData,Errors,everything):
     
     
 def errorExists(Errors,ErrorType):
+    # errorExists checks if an of error of the given Errorytype in the data
+    # Usage: errorExists(Errors,ErrorType)
+    ##
+    # Input: Errors:N x 2 pandas dataframe with Error types as well as   
+    #        the indexes in the given "gradesData" where they are located 
+    #        ErrorType: Type of Error in question
+    # Output: Bool value indiciating if the error exists
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     return (Errors['ErrorType'] == ErrorType).any()
 
 def determineOptions(Errors,everything):
+    # determineOptions determines which options of datacheck the user has
+    #                  depending of which errors are present
+    # Usage: options = determineOptions(Errors,ErrorType)
+    ##
+    # Input: Errors:N x 2 pandas dataframe with Error types as well as   
+    #        the indexes in the given "gradesData" where they are located 
+    #        ErrorType: Type of Error in question
+    # Output: Bool value indiciating if the error exists
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     options = []
     i = 1
+    #Wrong Grade
     if(errorExists(Errors,'WG')):
          options += ['{}. Wrong Grade'.format(i)]
          i += 1
+    #Duplicate ID
     if(errorExists(Errors,'ID')):
          options += ['{}. Duplicate Student ID\'s'.format(i)]
          i += 1
+    #Duplicate Name
     if(errorExists(Errors,'Name')):
          options += ['{}. Duplicate Names'.format(i)]    
          i += 1
     options += ['{}. Everything'.format(i)]
     i += 1
+    #Option to go back to options when "everything" option previously chosen
     if (everything):
          options += ['{}. Go Back\n'.format(i)]
     else:
@@ -377,18 +472,46 @@ def determineOptions(Errors,everything):
     return options
 
 def checkChoice(options,userIn):
+    # checkChoice determines which option the user chose
+    # Usage: userIn = determineOptions(options,userIn)
+    ##
+    # Input: Options: list of string options   
+    #        userIn: the choice of the user (integer value)
+    # Output: String corresponding to the users choice
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     for i in range(len(options)):
         if str(userIn) in options[i]:
+            #Remove number in string and get raw string choice
             userIn = options[i][3:]
             print("You chose",userIn)
             break
     return userIn
 
 def deleteError(Errors,dropType):
+    # deleteError deletes an Error from the Error dataframe of the given 
+    #             Errorytype
+    # Usage: detleteError(Errors,ErrorType)
+    ##
+    # Input: Errors:N x 2 pandas dataframe with with Error types as well as   
+    #        the indexes in the given "gradesData" where they are located 
+    #        ErrorType: Type of Error in question
+    # Output:An updated N x 2 pandas dataframe with Error types as well as   
+    #        the indexes in the given "gradesData" where they are located 
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     Errors = Errors.drop(Errors.loc[Errors['ErrorType'] == dropType].index[0])
     return Errors
 
 def loadErrors(gradesData):
+    # loadErrors locates the Errors found in the given gradesData dataframe
+    # Usage: Errors = loadErrors(gradesData)
+    ##
+    # Input: gradesData:  N x M pandas dataframe with student data and grades 
+    # Output:N x 2 pandas dataframe with Error types as well as   
+    #        the indexes in the given "gradesData" where they are located 
+    ##
+    # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     
     colNum = len(gradesData.columns)
     studentNum = gradesData.shape[0]
@@ -398,26 +521,19 @@ def loadErrors(gradesData):
     #convert to list to obtain index:
     wrongGrades = ~gradesData.iloc[0:studentNum,2:colNum].isin(grades).values
     idxGrade = np.where(wrongGrades == True)
-# =============================================================================
-#     #Find indexes of assignments not graded:
-#     noAssign = gradesData.iloc[0:studentNum,2:colNum].isnull().values
-#     idxAssign = np.where(noAssign == True)
-# =============================================================================
+
     #Find indexes for students with same StudentID's
     duplicateID =  gradesData.duplicated(['StudentID']).values
     idxID = np.where(duplicateID == True)
-    duplicateName =  gradesData.duplicated(['Name']).values
     #Find indexes for students with the same Names
+    duplicateName =  gradesData.duplicated(['Name']).values
     idxName = np.where(duplicateName == True)
+    
     #Store all indexes above in a pandas dataframe:
     data = []
     if (len(idxGrade[0]) > 0):
         #Wrong Grade
         data += [['WG',idxGrade]]
-# =============================================================================
-#     if (len(idxAssign[0]) > 0):
-#         data += [['No Assignment',idxAssign]]
-# =============================================================================
     if (len(idxID[0]) > 0):
         #Duplicate Student ID's
         data += [['ID',idxID]] 

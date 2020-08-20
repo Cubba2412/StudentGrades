@@ -14,11 +14,7 @@ def roundGrade(grades):
     
     
     #Array of possible grades
-    #pgrades = np.array([-3, 0, 2, 4, 7, 10, 12]) #If value is between 2 grades, using this order of grades will choose the lower one
     pgrades = np.array([12, 10, 7, 4, 2, 0, -3])  #If value is between 2 grades, using this order of grades will choose the higher one
-    
-    #Skal fjernes
-    #test = [min(pgrades, key = lambda x: abs(grades-x)) for grades in grades]
    
     #Create an array for storing final grades for each student
     n = np.size(grades)
@@ -32,7 +28,8 @@ def roundGrade(grades):
             if (grades[i] < 2):
                 gradesRounded[i] = 0
              #Round grades[i] to nearst possible grade
-             #If grades[i] is between 2 grades, the highest grade will be chosen
+             #If grades[i] is between 2 grades, the highest grade will be chosen, 
+             #as described in "Bekendtgørelse om karakterskala og anden bedømmelse" (https://www.retsinformation.dk/eli/lta/2007/262 (chapter 3, §14.))
             else:
                 #Find distance between grades[i] and possible grades
                 nearst_index = np.abs(pgrades - grades[i])
@@ -40,13 +37,5 @@ def roundGrade(grades):
                 gradesRounded[i] = pgrades[nearst_index.argmin()] 
     
     return gradesRounded
-
-
-
-
-#ALT HERUNDER ER BARE TEST OG SKAL FJERNES
-#grades = [3.5, 6, 9, 11]
-
-#print(roundGrade(grades))
 
 
