@@ -11,8 +11,9 @@ def loadGrades():
     ##
     # Usage: gradesData, dataLoaded, colNum, studentNum = loadGrades()
     ##
-    # Output data: N x M pandas dataframe with student data and grades in the  
-    # CSV file given
+    # Output gradesData: N x M pandas dataframe with student data and grades in the  
+    #        CSV file given
+    #       dataLoaded: Bool indicating that data has now been loaded
     ##
     # Author: Thomas B. Frederiksen s183729@student.dtu.dk, 2020
     while True:
@@ -30,11 +31,9 @@ def loadGrades():
                 print("\nError while loading datafile")
    
     
-    #Get number of columns and students to return to main script
-    colNum = len(gradesData.columns)
-    studentNum = gradesData.shape[0]
+    
 
-    return gradesData, dataLoaded, colNum, studentNum
+    return gradesData, dataLoaded
 
 
 def checkData(gradesData):

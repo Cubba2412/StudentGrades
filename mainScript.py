@@ -1,7 +1,7 @@
 #Main Script shared responsibilites
-#Lines 16-43: Thomas B. Frederiksen s183729@student.dtu.dk
-#lines 45-52: Henrik Riise Nielsen, s183693@student.dtu.dk
-#lines 54-74: Casper Grindsted, s183688@student.dtu.dk
+#Lines 16-48: Thomas B. Frederiksen s183729@student.dtu.dk
+#lines 49-56: Henrik Riise Nielsen, s183693@student.dtu.dk
+#lines 57-77: Casper Grindsted, s183688@student.dtu.dk
 
 import os.path
 folder = os.path.dirname(os.path.abspath(__file__))
@@ -20,13 +20,17 @@ dataLoaded = False
 dataNotChecked = 'WARNING: The loaded data contains errors which will affect calculations. Run the \"Check Data\" option to correct this\n'
 dataNotLoaded = "Data has not been loaded. Please load data to perform calculations \n"
 while True:
+    #Get number of columns and students in the grades Data
+    if(dataLoaded):
+        colNum = len(gradesData.columns)
+        studentNum = gradesData.shape[0]
     if(dataLoaded and not Errors.empty):
         print(dataNotChecked)
     printMenu()
     #Prompt user for a menu choice, and act upon the choice
-    choice = inputChoiceNum("Please choose an option: ", "Menu")            
+    choice = inputChoiceNum("Please choose an option: ", "Menu")     
     if(choice == 1):
-       gradesData, dataLoaded, colNum, studentNum = loadGrades()
+       gradesData, dataLoaded = loadGrades()
        Errors = loadErrors(gradesData)
        
     elif(choice == 2):

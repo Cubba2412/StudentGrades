@@ -21,7 +21,7 @@ def sortByName(grades):
         header = np.append(header,("Ass " + str(i+1)))                   #Adds a new element for each assignment
     header = np.append(header, "Final Grade")
     
-    df = DataFrame(grades, columns=header).to_string(index=False)        #Creates the dataframe with a costum first row and without the first column
+    df = DataFrame(grades, columns=header).to_string(index=False, na_rep = '')        #Creates the dataframe with a costum first row and without the first column
 
     print(df + '\n')
     
