@@ -17,12 +17,16 @@ folder = os.path.dirname(os.path.abspath(__file__))
 os.chdir(folder)
 from loadGrades import *
 from userInput import *
+from GradesPlot import *
+from computeFinalGrades import *
+from sortingHat import *
+
 
 #Initiliaze variables
 print("Welcome to the python student Grading Analysis program")
 dataLoaded = False
 #dataChoice = 1
-dataNotLoaded = "Data has not been loaded. Please load data to perform calculations"
+dataNotLoaded = "Data has not been loaded. Please load data to perform calculations \n"
 while True:
    
         printMenu()
@@ -58,7 +62,8 @@ while True:
            if not(dataLoaded):
                 print(dataNotLoaded)
            else:
-              print("option 3 chosen")
+              grades = gradesData.iloc[0:studentNum,2:colNum+1].to_numpy()
+              gradesPlot(grades)
               
 # =============================================================================
 #                while True:
@@ -76,6 +81,28 @@ while True:
             #If data has not been loaded, inform the user load data
             if not(dataLoaded):
                 print(dataNotLoaded)
+                
+            else:
+                print("\nGenerating list of grades...\n")
+                
+                #Get grade data from gradesData matrix
+                grades = gradesData.iloc[0:studentNum,2:colNum].to_numpy()
+                
+                #Compute final grade for each student  
+                gradesF = computeFinalGrades(grades)
+                
+                
+                #Add computed final grades to gradesData matrix
+                gradesF = np.reshape(gradesF, [studentNum, 1]) #Transverse array so it can be added as a column to the gradesData matrix 
+                finalGradesData = np.hstack((gradesData, gradesF))
+                
+                #print(finalGradesData + "\n")
+                
+                
+                #Sorts grades for all of the students in alphabetical order and display list
+                sortByName(finalGradesData)
+                
+                
 # =============================================================================
 #             elif(dataFiltered):
 #                 while True:
@@ -93,9 +120,9 @@ while True:
 #                        print("Error when creating plots")
 #                        pass
 # =============================================================================
-            else:
-                print("\nGenerating list of grades...\n")
-                print(gradesData.to_string(index = False, na_rep = ''))
+            #else:
+            #    print("\nGenerating list of grades...\n")
+            #    print(gradesData.to_string(index = False, na_rep = ''))
         #Exit the program, by breaking the loop
         elif(choice == 5):
             print("Goodbye")
