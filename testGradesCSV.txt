@@ -1,5 +1,5 @@
 StudentID,Name,Assignment1,Assignment2,Assignment3,Assignment4,Assignment5,Assignment6
-s123456,Michael Andersen,7,4,4,2,3
-s123456,Marie Hansen,12,7,2,4,8
+s123456,Michael Sørensen,7,4,4,2,3
+s123456,Marie Andersen,12,7,2,4,8
 s123468,Marie Andersen,-3,4,12,10,7,7
 s123579,Marie Hansen,10,,12,2,10,10
