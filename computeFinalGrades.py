@@ -1,7 +1,6 @@
 
 from roundGrade import *
 import numpy as np
-import pandas as pd
 
 
 def computeFinalGrades(grades):
@@ -58,6 +57,5 @@ def computeFinalGrades(grades):
     gradesFinal = gradesFinal + rGrades
     
     return gradesFinal
-
 
 

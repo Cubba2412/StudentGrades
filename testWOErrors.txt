@@ -1,0 +1,12 @@
+StudentID,Name,Assignment1,Assignment2,Assignment3,Assignment4
+s123456,Bob Bobson,7,4,4,2
+s127890,Alice Allison,12,7,2,4
+s111213,Kate Hotel,,,7,
+s141516,Kevin Alpha,2,-3,12,12
+s171819,Niels Lima,2,0,2,4
+s202122,Liam Lima,-3,0,2,4
+s232425,Oliver Oscar,0,2,4,7
+s262728,Peter Foxtrot,2,4,7,10
+s293031,Rasmus India,4,7,10,12
+s323334,Sarah India,7,10,12,
+s353637,Sofie November,10,12,,12

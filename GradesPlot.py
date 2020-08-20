@@ -56,7 +56,7 @@ def gradesPlot(grades):
     #########################################################################################
     #This part of the function creates the pointplot with markers for the average for each assignment
     assignments=len(grades[0])
-    print(assignments)
+    
     x = np.arange(0,assignments)
     
     fig, pp=plt.subplots()                                      #Starts a new figure.

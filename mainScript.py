@@ -17,7 +17,7 @@ from sortingHat import *
 print("Welcome to the python student Grading Analysis program")
 dataLoaded = False
 #dataChoice = 1
-dataNotChecked = 'WARNING: The loaded data contains errors which will affect calculations. Run the \"Check Data\" option to correct this\n'
+dataNotChecked = '\nWARNING: The loaded data contains errors which will affect calculations. Run the \"Check Data\" option to correct this \n'
 dataNotLoaded = "Data has not been loaded. Please load data to perform calculations \n"
 while True:
     #Get number of columns and students in the grades Data
